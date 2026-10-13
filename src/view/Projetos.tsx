@@ -9,7 +9,7 @@ export function Projetos() {
             <div className="page-intro">
                 <span className="eyebrow">01 / Ideias em prática</span>
                 <h1>Feito de ideias.<br/><span className="text-primary">Construído com código.</span></h1>
-                <p>Uma seleção de projetos conceituais que exploram design, desenvolvimento e novas possibilidades.</p>
+                <p>Os meus projetos em destaque. Uma seleção de projetos que demonstram como aplico engenharia e design para resolver problemas complexos.</p>
             </div>
             <div className="page-body">
                 <div className="filter-list" aria-label="Filtrar projetos">
