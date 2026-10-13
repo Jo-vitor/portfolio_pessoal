@@ -3,10 +3,27 @@ import { LuGithub, LuLinkedin } from "react-icons/lu";
 import { Button } from '../components/ui/Button';
 import { useState, type FormEvent } from 'react';
 import { profiles } from '../lib/portfolio';
+import { useTranslation } from 'react-i18next';
 
-const profileIcons = { mail: Mail, whatsapp: MessageCircle, linkedin: LuLinkedin, github: LuGithub };
+const profileIcons = {
+    mail: Mail,
+    whatsapp: MessageCircle,
+    linkedin: LuLinkedin,
+    github: LuGithub,
+} as const;
+
+type ProfileIconName = keyof typeof profileIcons;
+
+const typedProfiles = profiles as Array<{
+    name: string;
+    value: string;
+    href: string;
+    icon: ProfileIconName;
+}>;
 
 export function Contato() {
+
+    const { t } = useTranslation();
 
     const [message, setMessage] = useState('');
     const [copied, setCopied] = useState(false);
@@ -21,25 +38,25 @@ export function Contato() {
     return (
         <div className="enter">
             <div className="page-intro">
-                <span className="eyebrow">03 / O próximo passo</span>
-                <h1>Boas ideias começam<br /><span className="text-primary">com uma conversa.</span></h1>
-                <p>Um projeto em mente, uma oportunidade ou só um olá?<br />Será um prazer conhecer sua ideia.</p>
+                <span className="eyebrow">03 / {t('O próximo passo')}</span>
+                <h1>{t('Boas ideias começam')}<br /><span className="text-primary">{t('com uma conversa.')}</span></h1>
+                <p dangerouslySetInnerHTML={{ __html: t('Um projeto em mente, uma oportunidade ou só um olá?<br />Será um prazer conhecer sua ideia.') }}></p>
             </div>
             <div className="page-body contact-layout">
                 <div>
                     <MessageSquare className="text-primary mb-5" size={32} />
-                    <h2 className="text-xl mb-4">Vamos criar algo juntos.</h2>
-                    <p className="contact-note">Tem um projeto em mente, precisa de um parceiro técnico ou quer discutir uma nova oportunidade? Entre em contacto através dos canais abaixo ou envie-me uma mensagem direta.</p>
+                    <h2 className="text-xl mb-4">{t('Vamos criar algo juntos.')}</h2>
+                    <p className="contact-note">{t('Tem um projeto em mente, precisa de um parceiro técnico ou quer discutir uma nova oportunidade? Entre em contacto através dos canais abaixo ou envie-me uma mensagem direta.')}</p>
                     <div className="cv-profiles">
                         <div>
-                            <span className="eyebrow mb-4">Currículo</span>
+                            <span className="eyebrow mb-4">{t('Currículo')}</span>
                             <Button asChild variant="portfolio">
-                                <a href="/JoaoVitorSoares.pdf" download>Baixar currículo em PDF <Download /></a>
+                                <a href="/JoaoVitorSoares.pdf" download>{t('Baixar currículo em PDF')} <Download /></a>
                             </Button>
                         </div>
                         <div>
-                            <span className="eyebrow">Perfis profissionais</span>
-                            <ul className="profile-list">{profiles.map(p => {
+                            <span className="eyebrow">{t('Perfis profissionais')}</span>
+                            <ul className="profile-list">{typedProfiles.map(p => {
                                 const Icon = profileIcons[p.icon];
                                 return <li key={p.name}>
                                     <a className="profile-link" href={p.href} {...(p.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
@@ -58,27 +75,27 @@ export function Contato() {
                 </div>
                 <form className="contact-form" onSubmit={prepare}>
                     <label>
-                        Seu nome
-                        <input name="name" placeholder="Como você se chama?" required autoComplete="name" />
+                        {t('Seu nome')}
+                        <input name="name" placeholder={t('Como você se chama?')} required autoComplete="name" />
                     </label>
                     <label>
-                        Seu e-mail
-                        <input name="email" type="email" placeholder="voce@exemplo.com" required autoComplete="email" />
+                        {t('Seu e-mail')}
+                        <input name="email" type="email" placeholder={t('voce@exemplo.com')} required autoComplete="email" />
                     </label>
                     <label>
-                        O que você tem em mente?
-                        <textarea name="message" placeholder="Conte um pouco sobre sua ideia..." required />
+                        {t('O que você tem em mente?')}
+                        <textarea name="message" placeholder={t('Conte um pouco sobre sua ideia...')} required />
                     </label>
                     <Button variant="portfolio" size="lg" type="submit" className="justify-self-start">
-                        Preparar mensagem <ArrowUpRight />
+                        {t('Preparar mensagem')} <ArrowUpRight />
                     </Button>
                     {message &&
                         <div role="status">
-                            <p className="text-sm text-muted-foreground mb-3">Mensagem pronta — ainda não foi enviada.</p>
-                            <textarea aria-label="Mensagem preparada" value={message} readOnly />
+                            <p className="text-sm text-muted-foreground mb-3">{t('Mensagem pronta — ainda não foi enviada.')}</p>
+                            <textarea aria-label={t('Mensagem preparada')} value={message} readOnly />
                             <Button type="button" variant="editorial" className="mt-3" onClick={copy}>
                                 {copied ? <Check /> : <Copy />}
-                                {copied ? 'Mensagem copiada' : 'Copiar mensagem'}
+                                {copied ? t('Mensagem copiada') : t('Copiar mensagem')}
                             </Button>
                         </div>}
                 </form>

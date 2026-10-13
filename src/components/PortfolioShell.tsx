@@ -1,7 +1,17 @@
 import { ArrowUpRight } from 'lucide-react';
 import { Link, NavLink, Outlet } from 'react-router';
+import LanguageSwitcher from './ui/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
-export function PortfolioShell() {
+type PortfolioShellProps = {
+    ls: string;
+    setls: (language: any) => void;
+};
+
+export function PortfolioShell({ ls, setls }: PortfolioShellProps) {
+
+    const { t } = useTranslation();
+
     return (
         <div className="site-shell">
             <header className="site-header">
@@ -9,18 +19,22 @@ export function PortfolioShell() {
                 <nav className="site-nav" aria-label="Navegação principal">
                     <NavLink to="/" className={({ isActive }) =>
                         `nav-link ${isActive ? "active" : ""}`
-                    }>Sobre mim</NavLink>
+                    }>{t('Sobre mim')}</NavLink>
                     <NavLink to="/projetos" className={({ isActive }) =>
                         `nav-link ${isActive ? "active" : ""}`
-                    }>Projetos</NavLink>
+                    }>{t('Projetos')}</NavLink>
                     <NavLink to="/experiencias" className={({ isActive }) =>
                         `nav-link ${isActive ? "active" : ""}`
-                    }>Experiências</NavLink>
+                    }>{t('Experiências')}</NavLink>
                     <NavLink to="/contato" className={({ isActive }) =>
                         `nav-link ${isActive ? "active" : ""}`
-                    }>Contato</NavLink>
+                    }>{t('Contato')}</NavLink>
                 </nav>
-                <div className="availability"><span className="status-dot" />Vamos criar algo juntos</div>
+                <div className="availability">
+                    <span className="status-dot" />
+                    {t('Vamos criar algo juntos')}
+                </div>
+                <LanguageSwitcher ls={ls} setls={setls} />
             </header>
 
             <Outlet />
@@ -28,8 +42,8 @@ export function PortfolioShell() {
             <footer className="footer">
                 <span>© 2026 João Vitor Soares</span>
                 <div className="footer-links">
-                    <Link to="/projetos">Projetos <ArrowUpRight className="inline size-3" /></Link>
-                    <Link to="/contato">Vamos conversar <ArrowUpRight className="inline size-3" /></Link>
+                    <Link to="/projetos">{t('Projetos')} <ArrowUpRight className="inline size-3" /></Link>
+                    <Link to="/contato">{t('Vamos conversar')} <ArrowUpRight className="inline size-3" /></Link>
                 </div>
             </footer>
         </div>

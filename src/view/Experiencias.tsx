@@ -1,10 +1,15 @@
+import { useTranslation } from "react-i18next";
+
 export function Experiencias() {
+
+    const { t } = useTranslation();
+
     return (
         <div className="enter">
             <div className="page-intro">
-                <span className="eyebrow">02 / Em constante evolução</span>
-                <h1>Cada desafio,<br/><span className="text-primary">um novo aprendizado.</span></h1>
-                <p>Aqui compartilho as áreas em que atuo, as competências que construí e as vivências reais que moldaram minha carreira.</p>
+                <span className="eyebrow">02 / {t('Em constante evolução')}</span>
+                <h1>{t('Cada desafio,')}<br/><span className="text-primary">{t('um novo aprendizado.')}</span></h1>
+                <p>{t('Aqui compartilho as áreas em que atuo, as competências que construí e as vivências reais que moldaram minha carreira.')}</p>
             </div>
             <div className="page-body">
                 {
@@ -26,12 +31,12 @@ export function Experiencias() {
                     ].map((e,i) => 
                         <article className="experience-row" key={e.title}>
                             <div>
-                                <span className="period">0{i+1} / ÁREA DE ATUAÇÃO</span>
-                                <p className="mt-3">{e.subtitle}</p>
+                                <span className="period">0{i+1} / {t('ÁREA DE ATUAÇÃO')}</span>
+                                <p className="mt-3">{t(e.subtitle)}</p>
                             </div>
                             <div>
-                                <h2>{e.title}</h2>
-                                <p>{e.description}</p>
+                                <h2>{t(e.title)}</h2>
+                                <p>{t(e.description)}</p>
                                 <div className="skills">
                                     {e.skills.map(s => <span key={s} className="skill">{s}</span>)}
                                 </div>
