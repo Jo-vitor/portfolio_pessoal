@@ -1,94 +1,68 @@
-import { useState } from 'react';
-import { ArrowUpRight, Check, Lamp, Armchair, Coffee, X } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { Button } from '../components/ui/Button';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '../components/ui/Dialog';
-import { projects } from '../lib/portfolio';
 import { useTranslation } from 'react-i18next';
+import useGitHub, { visibleRepos } from '../hook/useGitHub';
+import GITHUB_CONFIG from '../config/githubConfig';
+import { fetchRepos } from '../service/githubService';
 
-export function ProjectGrid({ filter = 'Todos' }: { filter?: string }) {
+type PortfolioGridProps = { 
+    sobre?: boolean, 
+    sl?: (language: any) => void, 
+    filter?: string, 
+    username: string 
+};
+
+export function ProjectGrid({ sobre = false, sl, filter = 'Todos', username }: PortfolioGridProps) {
 
     const { t } = useTranslation();
 
-    const [selected, setSelected] = useState<(typeof projects)[number] | null>(null);
+    const { status, data } = useGitHub(fetchRepos, username);
+    const [limit, setLimit] = useState(sobre ? 3 : GITHUB_CONFIG.REPOS_PER_PAGE);
+
+    const repos = useMemo(() => visibleRepos(data ?? []), [data]);
+    useMemo(
+        () => {
+            const l = ['Todos', ...new Set((repos.map((r) => r.language).filter(Boolean)).sort())];
+            sl?.([...l])
+        },
+        [repos]
+    );
+
+    if (status === "loading") return <div className="gh-card gh-skeleton gh-skeleton-block" />;
+    if (status === "error") return null;
+
+    const filtered = repos
+        .filter((repo) => filter == 'Todos' ? repo : repo.language == filter)
+    const shown = filtered.slice(0, limit);
 
     return <>
         <div className="project-grid">
-            {projects.filter(p => filter === 'Todos' || p.category === filter).map(p => <article className="project-card" key={p.id}>
-                <div className={`project-preview ${p.preview === 'dashboard' ? 'green' : p.preview === 'tasks' ? 'blue' : ''}`}>
-                    <div className="mini-window" aria-hidden="true">
-                        <div className="mini-nav">
-                            <strong>{p.name.toLowerCase()}{p.preview === 'shop' ? '®' : '.'}</strong><span>{p.preview === 'shop' ? t('Coleção   Objetos   Sobre') : t('Visão geral   /   Meu espaço')}</span>
-                        </div>
-                        {p.preview === 'shop' ?
-                            <>
-                                <div className="mini-title" dangerouslySetInnerHTML={{ __html: t('Objetos para<br/>viver melhor.') }}></div>
-                                <div className="mini-shop">
-                                    <div className="mini-item">
-                                        <Lamp />
-                                    </div>
-                                    <div className="mini-item">
-                                        <Armchair />
-                                    </div>
-                                    <div className="mini-item">
-                                        <Coffee />
-                                    </div>
-                                </div>
-                            </>
-                            :
-                            p.preview === 'dashboard' ?
-                                <>
-                                    <div className="mini-title">
-                                        {t('Tudo em equilíbrio.')}
-                                    </div>
-                                    <div className="mini-dashboard">
-                                        {Array.from({ length: 7 }, (_, i) => <div className="mini-bar" key={i} />)}
-                                    </div>
-                                </>
-                                :
-                                <>
-                                    <div className="mini-title">
-                                        {t('Espaço para suas ideias.')}
-                                    </div>
-                                    
-                                    {['Planejar a próxima entrega', 'Criar novas possibilidades', 'Colocar o projeto no mundo'].map(task =>
-                                        <div className="mini-task" key={task}><Check size={10} />{t(task)}</div>
-                                    )}
-                                </>
-                        }
-                    </div>
-                </div>
+            {shown.map(repo => <article className="project-card" key={repo.id}>
                 <div className="project-meta">
                     <div>
-                        <h3>{p.name}<span className="text-muted-foreground font-sans text-xs"> / {t(p.type)}</span></h3>
-                        <p>{p.tech}</p>
+                        <span className="eyebrow mb-3">{t('Projeto')} / {repo.id}</span>
+                        <h3>{repo.name}</h3>
+                        <p>{repo.description ?? ''}</p>
+                        <div className="skills">
+                            <span className="skill">{repo.language ?? ''}</span>
+                        </div>
                     </div>
-                    <Button variant="ghost" size="icon" aria-label={`${t('Ver projeto')} ${p.name}`} onClick={() => setSelected(p)}>
-                        <ArrowUpRight />
+                    <Button variant="ghost" asChild>
+                        <a href={repo.html_url} target="_blank">
+                            <ArrowUpRight />
+                        </a>
                     </Button>
                 </div>
             </article>)
             }
         </div>
-        <Dialog open={selected !== null} onOpenChange={open => { if (!open) setSelected(null); }}>
-            <DialogContent>
-                {selected &&
-                    <>
-                        <span className="eyebrow">{t('Projeto conceitual')} / {selected.id}</span>
-                        <DialogTitle className="font-mono text-2xl">
-                            {selected.name}
-                        </DialogTitle>
-                        <DialogDescription className="leading-7">
-                            {t(selected.description)}
-                        </DialogDescription>
-                        <div className="skills">
-                            {selected.tech.split(' · ').map(techItem => <span key={techItem} className="skill">{techItem}</span>)}
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                            {t('Estudo demonstrativo para este portfólio. Sem repositório ou versão pública vinculados.')}
-                        </p>
-                    </>
-                }
-            </DialogContent>
-        </Dialog>
+        {!sobre ? limit < filtered.length && (
+            <div className='flex justify-center mt-5'>
+                <Button  onClick={() => setLimit((n) => n + GITHUB_CONFIG.REPOS_PER_PAGE)}>
+                    Ver mais ({filtered.length - limit})
+                </Button>
+            </div>
+        ): <></>}
     </>;
 }

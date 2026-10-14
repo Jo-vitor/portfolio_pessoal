@@ -213,7 +213,7 @@
 .page-intro { padding: 65px 0 45px; max-width: 720px; }
 .page-intro h1 { font-size: 45px; margin: 22px 0; line-height: 1.2; }
 .page-intro p { font-size: 15px; color: var(--muted-foreground); line-height: 1.8; }
-.page-body { min-height: 430px; padding-bottom: 70px; }
+.page-body { min-height: 430px; padding-bottom: 20px; }
 .filter-list { display: flex; gap: 8px; margin-bottom: 30px; }
 .experience-row { padding: 32px 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
 .experience-row h2 { font-size: 21px; margin-bottom: 12px; }

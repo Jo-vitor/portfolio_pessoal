@@ -5,6 +5,7 @@ import { skills } from "../lib/portfolio";
 import { Button } from "../components/ui/Button";
 import objectImage from '../assets/fotojvs.png';
 import { Trans, useTranslation } from "react-i18next";
+import GITHUB_CONFIG from "../config/githubConfig";
 
 export function Sobre() {
 
@@ -63,7 +64,7 @@ export function Sobre() {
                     <h2><span className="section-number">02 /</span>{t('Projetos selecionados')}</h2>
                     <Link to="/projetos">{t('Ver todos os projetos')} <ArrowUpRight size={15} /></Link>
                 </div>
-                <ProjectGrid />
+                <ProjectGrid sobre = {true} username={GITHUB_CONFIG.USERNAME}/>
             </section>
         </div>
     );

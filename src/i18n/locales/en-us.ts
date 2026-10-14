@@ -1,6 +1,6 @@
 export default {
   translations: {
-    //Header e Footer
+    //portfolioShell (Header e Footer)
     'Sobre mim': 'About me',
     'Projetos': 'Projects',
     'Experiências': 'Experiences',
@@ -17,7 +17,7 @@ export default {
     'Criar novas possibilidades': 'Create new possibilities',
     'Colocar o projeto no mundo': 'Bring the project to the world',
     'Ver projeto': 'View project',
-    'Projeto conceitual': 'Conceptual project',
+    'Projeto': 'Project',
     'Estudo demonstrativo para este portfólio. Sem repositório ou versão pública vinculados.': 'Demonstrative study for this portfolio. No linked repository or public version.',
 
     //sobre
@@ -43,8 +43,6 @@ export default {
     'Construído com código.': 'Built with code.',
     'Os meus projetos em destaque. Uma seleção de projetos que demonstram como aplico engenharia e design para resolver problemas complexos.': 'My featured projects. A selection of projects that demonstrate how I apply engineering and design to solve complex problems.',
     'Todos': 'All',
-    'Web': 'Web',
-    'App': 'App',
 
     //experiencias
     'Em constante evolução': 'In constant evolution',
