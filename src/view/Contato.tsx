@@ -1,9 +1,10 @@
 import { ArrowUpRight, Copy, Check, MessageSquare, Download, Mail, MessageCircle } from 'lucide-react';
 import { LuGithub, LuLinkedin } from "react-icons/lu";
 import { Button } from '../components/ui/Button';
-import { useState, type FormEvent } from 'react';
+import { useRef, useState } from 'react';
 import { profiles } from '../lib/portfolio';
 import { useTranslation } from 'react-i18next';
+import emailjs from '@emailjs/browser';
 
 const profileIcons = {
     mail: Mail,
@@ -21,19 +22,42 @@ const typedProfiles = profiles as Array<{
     icon: ProfileIconName;
 }>;
 
+const serviceId = import.meta.env.VITE_SERVICE_ID_EMAIL;
+const templateId = import.meta.env.VITE_TEMPLATE_ID_EMAIL;
+const publicKey = import.meta.env.VITE_PUBLIC_KEY_EMAIL;
+
 export function Contato() {
 
     const { t } = useTranslation();
 
-    const [message, setMessage] = useState('');
-    const [copied, setCopied] = useState(false);
-    function prepare(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        setMessage(`Olá, João Vitor!\n\nMeu nome é ${data.get('name')}.\nE-mail: ${data.get('email')}\n\n${data.get('message')}`);
-        setCopied(false);
-    }
-    async function copy() { try { await navigator.clipboard.writeText(message); setCopied(true); } catch { setCopied(false); } }
+    const [sucesso, setSucesso] = useState(false);
+    const [erro, setErro] = useState(false);
+
+    const form = useRef<HTMLFormElement>(null);
+
+    const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+        if (!form.current) return;
+
+    emailjs
+      .sendForm(serviceId, templateId, form.current, {
+        publicKey: publicKey,
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+          form.current.reset();
+          setErro(false)
+          setSucesso(true)
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+          setSucesso(false);
+          setErro(true);
+        },
+      );
+  };
+
 
     return (
         <div className="enter">
@@ -73,31 +97,34 @@ export function Contato() {
                         </div>
                     </div>
                 </div>
-                <form className="contact-form" onSubmit={prepare}>
+                <form className="contact-form" ref={form} onSubmit={sendEmail}>
                     <label>
                         {t('Seu nome')}
                         <input name="name" placeholder={t('Como você se chama?')} required autoComplete="name" />
                     </label>
                     <label>
                         {t('Seu e-mail')}
-                        <input name="email" type="email" placeholder={t('voce@exemplo.com')} required autoComplete="email" />
+                        <input name="email" type="email" placeholder={t('voce@hotmail.com')} required autoComplete="email" />
                     </label>
                     <label>
                         {t('O que você tem em mente?')}
                         <textarea name="message" placeholder={t('Conte um pouco sobre sua ideia...')} required />
                     </label>
                     <Button variant="portfolio" size="lg" type="submit" className="justify-self-start">
-                        {t('Preparar mensagem')} <ArrowUpRight />
+                        {t('Enviar mensagem')} <ArrowUpRight />
                     </Button>
-                    {message &&
-                        <div role="status">
-                            <p className="text-sm text-muted-foreground mb-3">{t('Mensagem pronta — ainda não foi enviada.')}</p>
-                            <textarea aria-label={t('Mensagem preparada')} value={message} readOnly />
-                            <Button type="button" variant="editorial" className="mt-3" onClick={copy}>
-                                {copied ? <Check /> : <Copy />}
-                                {copied ? t('Mensagem copiada') : t('Copiar mensagem')}
-                            </Button>
-                        </div>}
+                    <div>
+                        {sucesso ? 
+                            <span className="sucesso">{t('Mensagem enviada')}</span>
+                            :
+                            <></>
+                        }
+                        {erro ?
+                            <span className="erro">{t('Erro ao enviar')}</span>
+                            :
+                            <></>
+                        }
+                    </div>
                 </form>
             </div>
         </div>

@@ -76,10 +76,8 @@ export default {
     'voce@exemplo.com': 'you@example.com',
     'O que você tem em mente?': 'What do you have in mind?',
     'Conte um pouco sobre sua ideia...': 'Tell me a little about your idea...',
-    'Preparar mensagem': 'Prepare message',
-    'Mensagem pronta — ainda não foi enviada.': 'Message ready — not yet sent.',
-    'Mensagem preparada': 'Prepared message',
-    'Mensagem copiada': 'Message copied',
-    'Copiar mensagem': 'Copy message'
+    'Enviar mensagem': 'Send message',
+    'Mensagem enviada': 'Message sent',
+    'Erro ao enviar': 'Error to send'
   }
 };  

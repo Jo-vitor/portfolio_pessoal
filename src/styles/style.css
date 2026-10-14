@@ -90,6 +90,7 @@
   --accent: rgb(83, 83, 83);
   --accent-foreground: var(--foreground);
 
+  --sucesso: rgb(44, 173, 0);
   --destructive: rgb(253, 117, 98);
   --destructive-foreground: var(--background);
 
@@ -190,6 +191,8 @@
 .about-copy strong { color: var(--foreground); font-weight: 400; }
 .skills { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 19px; }
 .skill { font-family: var(--font-mono); font-size: 10px; border: 1px solid var(--border); padding: 7px 11px; border-radius: 3px; }
+.sucesso { font-family: var(--font-sans); font-size: 10px; color: var(--sucesso); border: 1px solid var(--sucesso); padding: 7px 11px; border-radius: 3px; }
+.erro { font-family: var(--font-sans); font-size: 10px; color: var(--destructive); border: 1px solid var(--destructive); padding: 7px 11px; border-radius: 3px; }
 .projects-section { padding: 43px 0 55px; border-top: 1px solid var(--border); }
 .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
 .project-card { min-width: 0; }
