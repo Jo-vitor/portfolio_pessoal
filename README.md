@@ -28,11 +28,6 @@ As seguintes ferramentas, frameworks e bibliotecas foram utilizados na construç
 * **Estilização:** Tailwind CSS
 * **Build Tool:** Vite
 
-### 🖥️ Back-end
-
-* **Linguagem/Runtime:** Java 17 (JDK)
-* **Framework:** Spring Boot 4.1.1
-
 ---
 
 ## 📂 Estrutura de Pastas
@@ -139,3 +134,25 @@ Descreva o propósito das pastas principais.
     </td>
   </tr> 
 </table>
+
+---
+
+## ✨ Funcionalidades Principais
+Liste as funcionalidades de forma clara e objetiva.
+
+- 🌐 **Internacionalização (i18n):** Suporte a múltiplos idiomas.
+- 🔄 **Integração com APIs Externas:** Conexão com serviços de terceiros (GitHub).
+- 📨 **Sistema de Notificações:** Envio de e-mail.
+
+---
+
+## 🚀 Deploy
+Link: https://joaovitorsoares.vercel.app/
+
+---
+
+## 👥 Autores
+
+| 👤 Nome | :octocat: GitHub | 💼 LinkedIn | 📤 Gmail |
+|---------|-----------------|-------------|-----------|
+| João Vitor Soares  |  <div align="center"><a href="https://github.com/jo-vitor"><img src="https://joaopauloaramuni.github.io/image/github6.png" width="50px" height="50px"></a></div> | <div align="center"><a href="https://www.linkedin.com/in/joao-vitor-soares"><img src="https://joaopauloaramuni.github.io/image/linkedin2.png" width="50px" height="50px"></a></div> | <div align="center"><a href="mailto:soaresjvs14@gmail.com"><img src="https://joaopauloaramuni.github.io/image/gmail3.png" width="50px" height="50px"></a></div> |
